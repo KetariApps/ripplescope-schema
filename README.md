@@ -1,0 +1,1 @@
+# ripplescope-schema
