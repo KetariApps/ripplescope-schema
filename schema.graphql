@@ -320,7 +320,7 @@ type Project {
   impacts: [Impact!]! @relationship(type: "HAS", direction: OUT)
   impactAreas: [ImpactArea!]!
     @relationship(type: "IMPACTS", properties: "ProjectImpacts", direction: OUT)
-  contexts: UnifiedContext!
+  considerations: [Considerations!]!
     @relationship(type: "ON", properties: "ProjectImpacts", direction: OUT)
   statuses: [Status!]!
     @relationship(
@@ -336,7 +336,7 @@ type Project {
     )
 }
 
-# todo: change label to :Ripple
+# todo: Merge with :Ripple
 type Impact {
   name: String!
   verified: Boolean!
@@ -346,7 +346,8 @@ type Impact {
   contexts: Context!
     @relationship(type: "ON", properties: "ImpactOn", direction: OUT)
 }
-# todo: change label to :Context
+
+# todo: merge with :Scope
 type ImpactArea {
   uniqueName: String! @unique
   verified: Boolean!
@@ -360,7 +361,7 @@ type ImpactArea {
     @relationship(type: "IMPACTS", properties: "ProjectImpacts", direction: IN)
   impactCategory: ImpactCategory @relationship(type: "CONTAINS", direction: IN)
 }
-# todo: change label to :Context
+# todo: merge with :Scope
 type ImpactCategory {
   uniqueName: ImpactCategoryName! @unique
   name: String!
@@ -368,7 +369,7 @@ type ImpactCategory {
   doughnutCategory: DoughnutCategory
     @relationship(type: "CONTAINS", direction: IN)
 }
-# todo: change label to :Context
+# todo: merge with :Scope
 type DoughnutCategory {
   uniqueName: DoughnutCategoryName! @unique
   name: String!
@@ -376,26 +377,76 @@ type DoughnutCategory {
     @relationship(type: "CONTAINS", direction: OUT)
 }
 
-# Contexts
+# V3 new types
+interface RippleIn @relationshipProperties {
+  # DEFAULT FIELDS
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+  updatedAt: DateTime @timestamp(operations: [UPDATE])
 
-type Context {
-  id: ID @unique
-  name: String
-  description: String!
-  projects: [Project!]!
-    @relationship(type: "IMPACTS", properties: "ProjectImpacts", direction: IN)
-  impacts: [Impact!]!
-    @relationship(type: "ON", properties: "ImpactOn", direction: IN)
+  # DETAILS
+  magnitude: Float!
 }
-type GeoContext @node(labels: ["Geographic", "Context"]) {
-  id: ID @unique
-  name: String @unique
-  nation: NationCode
-  state: String
-  city: String
-  description: String!
-  projects: [Project!]!
-    @relationship(type: "IMPACTS", properties: "ProjectImpacts", direction: IN)
-  impacts: [Impact!]!
-    @relationship(type: "ON", properties: "ImpactOn", direction: IN)
+
+interface ProjectCreates @relationshipProperties {
+  # DEFAULT FIELDS
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+  updatedAt: DateTime @timestamp(operations: [UPDATE])
+
+  # DETAILS
+  aspect: String!
+  reason: String!
+}
+
+type Ripple {
+  # DEFAULT FIELDS
+  id: ID! @id
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+  updatedAt: DateTime @timestamp(operations: [UPDATE])
+
+  # DETAILS
+  name: String
+  context: String
+  description: String
+
+  # RELATIONSHIPS
+  project: Project!
+    @relationship(type: "CREATES", properties: "ProjectCreates", direction: IN)
+  scopes: [Scope!]!
+    @relationship(type: "IN", properties: "RippleIn", direction: OUT)
+}
+
+type Scope {
+  # DEFAULT FIELDS
+  id: ID! @id
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+  updatedAt: DateTime @timestamp(operations: [UPDATE])
+
+  # DETAILS
+  name: String
+  description: String
+
+  # RELATIONSHIPS
+  considerations: [Consideration!]! @relationship(type: "HAS", direction: OUT)
+  scopes: [Scope!]!
+    @relationship(type: "IN", properties: "RippleIn", direction: IN)
+}
+
+type Consideration {
+  # DEFAULT FIELDS
+  id: ID! @id
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+  updatedAt: DateTime @timestamp(operations: [UPDATE])
+
+  # DETAILS
+  name: String
+  details: String!
+
+  # RELATIONSHIPS
+  projects: [Project!]! @relationship(type: "HAS", direction: IN)
+  considerations: [Consideration!]! @relationship(type: "HAS", direction: IN)
 }
