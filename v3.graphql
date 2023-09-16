@@ -19,11 +19,7 @@ type User {
 type ProjectStatus {
   name: ProjectStatusName! @unique
   projects: [Project!]!
-    @relationship(
-      type: "HAS"
-      properties: "ProjectStatusDetails"
-      direction: IN
-    )
+    @relationship(type: "HAS", properties: "ProjectHasStatus", direction: IN)
 
   # DEFAULT FIELDS
   id: ID! @id
