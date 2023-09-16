@@ -42,7 +42,7 @@ type Project {
 
   # RELATIONSHIPS
   considerations: [Consideration!]! @relationship(type: "HAS", direction: OUT)
-  statuses: [Status!]!
+  statuses: [ProjectStatus!]!
     @relationship(type: "HAS", properties: "ProjectHasStatus", direction: OUT)
   scopes: [Scope!]!
     @relationship(
