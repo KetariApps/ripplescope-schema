@@ -37,16 +37,14 @@ type ProjectStatus {
 }
 
 type Project {
-  id: ID @unique
   name: String!
   website: String @unique
-  verified: Boolean
 
   # RELATIONSHIPS
-  considerations: [Considerations!]! @relationship(type: "HAS", direction: OUT)
+  considerations: [Consideration!]! @relationship(type: "HAS", direction: OUT)
   statuses: [Status!]!
     @relationship(type: "HAS", properties: "ProjectHasStatus", direction: OUT)
-  scopes: [SCOPE!]!
+  scopes: [Scope!]!
     @relationship(
       type: "TOUCHES"
       properties: "ProjectTouchesScope"
