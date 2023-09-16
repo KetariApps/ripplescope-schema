@@ -7,11 +7,7 @@ type User {
 
   # RELATIONSHIPS
   interactions: [Interactable!]!
-    @relationship(
-      type: "INTERACTS_WITH"
-      properties: "UserInteractsWith"
-      direction: IN
-    )
+    @relationship(type: "INTERACTS_WITH", direction: IN)
 
   # DEFAULT FIELDS
   id: ID! @id
@@ -176,7 +172,6 @@ union Interactable =
   | Ripple
   | Scope
   | Consideration
-union UserInteractsWith = UserInteractsWith_Project | UserInteractsWith_Ripple
 
 # Enums
 enum ProjectStatusName {
