@@ -93,6 +93,12 @@ type Scope {
   scopes: [Scope!]! @relationship(type: "REFINES", direction: OUT)
   ripples: [Ripple!]!
     @relationship(type: "IN", properties: "RippleIn", direction: IN)
+  projects: [Project!]!
+    @relationship(
+      type: "TOUCHES"
+      properties: "ProjectTouchesScope"
+      direction: IN
+    )
 
   # DEFAULT FIELDS
   id: ID! @id
