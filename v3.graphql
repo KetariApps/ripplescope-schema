@@ -85,7 +85,7 @@ type Ripple {
 
 type Scope {
   # DETAILS
-  name: String
+  name: String! @unique
   description: String
 
   # RELATIONSHIPS
