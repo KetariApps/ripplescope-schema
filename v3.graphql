@@ -120,47 +120,58 @@ type Consideration {
 # Interfaces
 interface ProjectTouchesScope @relationshipProperties {
   description: String!
+
+  # DEFAULT FIELDS
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+  updatedAt: DateTime @timestamp(operations: [UPDATE])
 }
 
 interface ProjectHasStatus @relationshipProperties {
   message: String
   dump: String
-  timestamp: DateTime! @timestamp(operations: [CREATE])
+
+  # DEFAULT FIELDS
+  createdAt: DateTime! @timestamp(operations: [CREATE])
 }
 
 interface UserInteractsWith_Project @relationshipProperties {
   type: UserInteractionName!
   message: String
   dump: String
-  timestamp: DateTime! @timestamp(operations: [CREATE])
+
+  # DEFAULT FIELDS
+  createdAt: DateTime! @timestamp(operations: [CREATE])
 }
 
 interface UserInteractsWith_Ripple @relationshipProperties {
   type: UserInteractionName!
   message: String
   dump: String
-  timestamp: DateTime! @timestamp(operations: [CREATE])
+
+  # DEFAULT FIELDS
+  createdAt: DateTime! @timestamp(operations: [CREATE])
 }
 
 interface RippleIn @relationshipProperties {
+  # DETAILS
+  magnitude: Float!
+
   # DEFAULT FIELDS
   verified: Boolean! @default(value: false)
   createdAt: DateTime! @timestamp(operations: [CREATE])
   updatedAt: DateTime @timestamp(operations: [UPDATE])
-
-  # DETAILS
-  magnitude: Float!
 }
 
 interface ProjectCreates @relationshipProperties {
+  # DETAILS
+  aspect: String!
+  reason: String!
+
   # DEFAULT FIELDS
   verified: Boolean! @default(value: false)
   createdAt: DateTime! @timestamp(operations: [CREATE])
   updatedAt: DateTime @timestamp(operations: [UPDATE])
-
-  # DETAILS
-  aspect: String!
-  reason: String!
 }
 
 # Unions
