@@ -7,7 +7,7 @@ type User {
 
   # RELATIONSHIPS
   interactions: [Interactable!]!
-    @relationship(type: "INTERACTS_WITH", direction: IN)
+    @relationship(type: "INTERACTS_WITH", direction: OUT)
 
   # DEFAULT FIELDS
   id: ID! @id
@@ -44,7 +44,7 @@ type Project {
       properties: "ProjectTouchesScope"
       direction: OUT
     )
-  interactions: [User!]!
+  users: [User!]!
     @relationship(
       type: "INTERACTS_WITH"
       properties: "UserInteractsWith_Project"
@@ -69,7 +69,7 @@ type Ripple {
     @relationship(type: "CREATES", properties: "ProjectCreates", direction: IN)
   scopes: [Scope!]!
     @relationship(type: "IN", properties: "RippleIn", direction: OUT)
-  interactions: [User!]!
+  users: [User!]!
     @relationship(
       type: "INTERACTS_WITH"
       properties: "UserInteractsWith_Ripple"
