@@ -90,7 +90,8 @@ type Scope {
 
   # RELATIONSHIPS
   considerations: [Consideration!]! @relationship(type: "HAS", direction: OUT)
-  scopes: [Scope!]!
+  scopes: [Scope!]! @relationship(type: "REFINES", direction: OUT)
+  ripples: [Ripple!]!
     @relationship(type: "IN", properties: "RippleIn", direction: IN)
 
   # DEFAULT FIELDS
