@@ -86,6 +86,7 @@ type Scope {
   # DETAILS
   name: String! @unique
   description: String
+  basis: String
 
   # RELATIONSHIPS
   considerations: [Consideration!]! @relationship(type: "HAS", direction: OUT)
