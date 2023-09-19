@@ -246,14 +246,6 @@ interface ProjectTouchesScope @relationshipProperties {
   aspect: String!
   reason: String!
 
-  # RELATIONSHIPS
-  users: [User!]!
-    @relationship(
-      type: "INTERACTS_WITH"
-      properties: "UserInteractsWith"
-      direction: IN
-    )
-
   # DEFAULT FIELDS
   verified: Boolean! @default(value: false)
   createdAt: DateTime! @timestamp(operations: [CREATE])
