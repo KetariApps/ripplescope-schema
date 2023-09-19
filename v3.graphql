@@ -124,7 +124,8 @@ type Consideration {
 
 # Interfaces
 interface ProjectTouchesScope @relationshipProperties {
-  description: String!
+  aspect: String!
+  reason: String!
 
   # DEFAULT FIELDS
   verified: Boolean! @default(value: false)
