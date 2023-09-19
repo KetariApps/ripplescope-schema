@@ -33,7 +33,7 @@ type ProjectStatus {
 type Project {
   name: String!
   website: String @unique
-  breif: String!
+  brief: String!
   description: String
 
   # RELATIONSHIPS
@@ -65,7 +65,7 @@ type Project {
 type Ripple {
   # DETAILS
   name: String
-  breif: String!
+  brief: String!
   description: String
 
   # RELATIONSHIPS
@@ -89,7 +89,7 @@ type Ripple {
 type Scope {
   # DETAILS
   name: String! @unique
-  breif: String!
+  brief: String!
   description: String
   basis: String
 
@@ -121,7 +121,7 @@ type Scope {
 # Consideration types
 type Question @node(labels: ["Question", "Consideration"]) {
   # DETAILS
-  breif: String!
+  brief: String!
   description: String
 
   # RELATIONSHIPS
@@ -142,7 +142,7 @@ type Question @node(labels: ["Question", "Consideration"]) {
 type Example @node(labels: ["Example", "Consideration"]) {
   # DETAILS
   name: String
-  breif: String!
+  brief: String!
   description: String
 
   # RELATIONSHIPS
@@ -163,7 +163,7 @@ type Example @node(labels: ["Example", "Consideration"]) {
 type Stakeholder @node(labels: ["Stakeholder", "Consideration"]) {
   # DETAILS
   name: String! @unique
-  breif: String!
+  brief: String!
   description: String
 
   # RELATIONSHIPS
@@ -203,7 +203,7 @@ type WebDump @node(labels: ["WebDump", "Consideration"]) {
 
 type Geographic @node(labels: ["Geographic", "Consideration"]) {
   # DETAILS
-  breif: String
+  brief: String
   description: String
 
   # RELATIONSHIPS
@@ -223,7 +223,7 @@ type Geographic @node(labels: ["Geographic", "Consideration"]) {
 
 type Workers @node(labels: ["Workers", "Consideration"]) {
   # DETAILS
-  breif: String
+  brief: String
   description: String
 
   # RELATIONSHIPS
