@@ -1,4 +1,347 @@
+# Types
+type User {
+  # DETAILS
+  email: String! @unique
+  familyName: String
+  givenName: String
+
+  # RELATIONSHIPS
+  interactions: [Interactable!]!
+    @relationship(
+      type: "INTERACTS_WITH"
+      properties: "UserInteractsWith"
+      direction: OUT
+    )
+
+  # DEFAULT FIELDS
+  id: ID! @id
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+}
+
+type ProjectStatus {
+  name: ProjectStatusName! @unique
+  projects: [Project!]!
+    @relationship(type: "HAS", properties: "ProjectHasStatus", direction: IN)
+
+  # DEFAULT FIELDS
+  id: ID! @id
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+}
+
+type Project {
+  name: String!
+  website: String! @unique
+  brief: String!
+  description: String
+
+  # RELATIONSHIPS
+  considerations: [ProjectConsideration!]!
+    @relationship(type: "HAS", direction: OUT)
+  ripples: [Ripple!]!
+    @relationship(type: "CREATES", properties: "ProjectCreates", direction: OUT)
+  statuses: [ProjectStatus!]!
+    @relationship(type: "HAS", properties: "ProjectHasStatus", direction: OUT)
+  scopes: [Scope!]!
+    @relationship(
+      type: "TOUCHES"
+      properties: "ProjectTouchesScope"
+      direction: OUT
+    )
+  users: [User!]!
+    @relationship(
+      type: "INTERACTS_WITH"
+      properties: "UserInteractsWith"
+      direction: IN
+    )
+
+  # DEFAULT FIELDS
+  id: ID! @id
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+}
+
+type Ripple {
+  # DETAILS
+  name: String
+  brief: String!
+  description: String
+
+  # RELATIONSHIPS
+  project: Project!
+    @relationship(type: "CREATES", properties: "ProjectCreates", direction: IN)
+  scopes: [Scope!]!
+    @relationship(type: "IN", properties: "RippleIn", direction: OUT)
+  users: [User!]!
+    @relationship(
+      type: "INTERACTS_WITH"
+      properties: "UserInteractsWith"
+      direction: IN
+    )
+
+  # DEFAULT FIELDS
+  id: ID! @id
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+}
+
+type Scope {
+  # DETAILS
+  name: String! @unique
+  brief: String!
+  description: String
+  basis: String
+
+  # RELATIONSHIPS
+  considerations: [ScopeConsideration!]!
+    @relationship(type: "HAS", direction: OUT)
+  scopes: [Scope!]! @relationship(type: "REFINES", direction: OUT)
+  ripples: [Ripple!]!
+    @relationship(type: "IN", properties: "RippleIn", direction: IN)
+  projects: [Project!]!
+    @relationship(
+      type: "TOUCHES"
+      properties: "ProjectTouchesScope"
+      direction: IN
+    )
+  users: [User!]!
+    @relationship(
+      type: "INTERACTS_WITH"
+      properties: "UserInteractsWith"
+      direction: IN
+    )
+
+  # DEFAULT FIELDS
+  id: ID! @id
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+}
+
+# Consideration types
+type Question @node(labels: ["Question", "Consideration"]) {
+  # DETAILS
+  brief: String!
+  description: String
+
+  # RELATIONSHIPS
+  scopes: [Scope!]! @relationship(type: "HAS", direction: IN)
+  users: [User!]!
+    @relationship(
+      type: "INTERACTS_WITH"
+      properties: "UserInteractsWith"
+      direction: IN
+    )
+
+  # DEFAULT FIELDS
+  id: ID! @id
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+}
+
+type Example @node(labels: ["Example", "Consideration"]) {
+  # DETAILS
+  name: String
+  brief: String!
+  description: String
+
+  # RELATIONSHIPS
+  scopes: [Scope!]! @relationship(type: "HAS", direction: IN)
+  users: [User!]!
+    @relationship(
+      type: "INTERACTS_WITH"
+      properties: "UserInteractsWith"
+      direction: IN
+    )
+
+  # DEFAULT FIELDS
+  id: ID! @id
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+}
+
+type Stakeholder @node(labels: ["Stakeholder", "Consideration"]) {
+  # DETAILS
+  name: String! @unique
+  brief: String!
+  description: String
+
+  # RELATIONSHIPS
+  projects: [Project!]! @relationship(type: "HAS", direction: IN)
+  scopes: [Scope!]! @relationship(type: "HAS", direction: IN)
+  users: [User!]!
+    @relationship(
+      type: "INTERACTS_WITH"
+      properties: "UserInteractsWith"
+      direction: IN
+    )
+
+  # DEFAULT FIELDS
+  id: ID! @id
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+}
+
+type WebDump @node(labels: ["WebDump", "Consideration"]) {
+  # DETAILS
+  content: String!
+
+  # RELATIONSHIPS
+  projects: [Project!]! @relationship(type: "HAS", direction: IN)
+  users: [User!]!
+    @relationship(
+      type: "INTERACTS_WITH"
+      properties: "UserInteractsWith"
+      direction: IN
+    )
+
+  # DEFAULT FIELDS
+  id: ID! @id
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+}
+
+type Geographic @node(labels: ["Geographic", "Consideration"]) {
+  # DETAILS
+  brief: String
+  description: String
+
+  # RELATIONSHIPS
+  projects: [Project!]! @relationship(type: "HAS", direction: IN)
+  users: [User!]!
+    @relationship(
+      type: "INTERACTS_WITH"
+      properties: "UserInteractsWith"
+      direction: IN
+    )
+
+  # DEFAULT FIELDS
+  id: ID! @id
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+}
+
+type Workers @node(labels: ["Workers", "Consideration"]) {
+  # DETAILS
+  brief: String
+  description: String
+
+  # RELATIONSHIPS
+  projects: [Project!]! @relationship(type: "HAS", direction: IN)
+  users: [User!]!
+    @relationship(
+      type: "INTERACTS_WITH"
+      properties: "UserInteractsWith"
+      direction: IN
+    )
+
+  # DEFAULT FIELDS
+  id: ID! @id
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+}
+
+# Interfaces
+interface ProjectTouchesScope @relationshipProperties {
+  aspect: String!
+  reason: String!
+
+  # DEFAULT FIELDS
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+}
+
+interface ProjectHasStatus @relationshipProperties {
+  message: String
+  dump: String
+
+  # DEFAULT FIELDS
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+}
+
+interface UserInteractsWith @relationshipProperties {
+  type: UserInteractionName!
+  message: String
+  dump: String
+
+  # DEFAULT FIELDS
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+}
+
+interface RippleIn @relationshipProperties {
+  # DETAILS
+  magnitude: Float!
+  sentiment: RipplesSentiment!
+
+  # DEFAULT FIELDS
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+}
+
+interface ProjectCreates @relationshipProperties {
+  # DETAILS
+  aspect: String!
+  reason: String!
+
+  # DEFAULT FIELDS
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+}
+
+# Unions
+union Interactable =
+    User
+  | ProjectStatus
+  | Project
+  | Ripple
+  | Scope
+  | Question
+  | Example
+  | Stakeholder
+  | WebDump
+  | Geographic
+  | Workers
+
+union ProjectConsideration = Stakeholder | WebDump | Geographic | Workers
+
+union ScopeConsideration = Stakeholder | Question | Example
+
 # Enums
+enum RipplesSentiment {
+  POSITIVE
+  NEGATIVE
+}
+
+enum ProjectStatusName {
+  RIPPLE_CHAIN_LOCATIONS_INFERRING
+  RIPPLE_CHAIN_LOCATIONS_CONNECTED
+  RIPPLE_CHAIN_SCOPES_INFERRING
+  RIPPLE_CHAIN_SCOPES_CONNECTED
+  RIPPLE_CHAIN_RIPPLES_INFERRING
+  RIPPLE_CHAIN_RIPPLES_CONNECTED
+  RIPPLE_CHAIN_DONE
+  RIPPLE_CHAIN_ERROR
+  VERIFICATION_BEGAN
+  VERIFICATION_DONE
+  VERIFICATION_ERROR
+}
+
+"""
+Names for the interactions a user may have.
+"""
+enum UserInteractionName {
+  CREATE
+  READ
+  UPDATE
+  DELETE
+  OWNERSHIP
+  TRUST
+  # Determine additional, specific actions?
+  # Should user interaction types be limited based on what they're interacting with?
+  # For example, a user can't begin verification on a non-verifiable entity.
+  # This would mean, also, that entities define the interactions they're allowed to have on their relationship properties with a user.
+}
+
 enum NationCode {
   AFG # Afghanistan
   ALA # Aland Islands
@@ -247,206 +590,4 @@ enum NationCode {
   YEM # Yemen
   ZMB # Zambia
   ZWE # Zimbabwe
-}
-enum DoughnutCategoryName {
-  SOCIAL
-  ECOLOGICAL
-}
-enum ImpactCategoryName {
-  ATMOSPHERE
-  CHEMICAL_WASTE_AND_SUPPLY_CHAINS
-  ENVIRONMENTAL_PRESERVATION
-  BASIC_SERVICES
-  SOCIAL_OPPORTUNITIES
-  SOCIAL_RIGHTS
-}
-enum ProjectStatus {
-  CREATED
-  INFERRING_LOCATION_CONTEXT
-  INFERRING_RIPPLE_CONTEXT
-  EVALUATING_IMPACTS
-  ERROR
-  DONE
-}
-
-# Interfaces
-interface ImpactOn @relationshipProperties {
-  aspect: String!
-  reason: String!
-  score: Float #todo: rename to magnitude
-}
-interface ProjectImpacts @relationshipProperties {
-  description: String!
-}
-interface ProjectStatusDetails @relationshipProperties {
-  message: String
-  dump: String
-  timestamp: DateTime! @timestamp(operations: [CREATE])
-}
-interface UserInteractionDetails @relationshipProperties {
-  message: String
-  dump: String
-  timestamp: DateTime! @timestamp(operations: [CREATE])
-}
-
-# Unions
-union UnifiedContext = Context | GeoContext
-
-# Types
-type Status {
-  name: ProjectStatus! @unique
-  projects: [Project!]!
-    @relationship(
-      type: "HAS"
-      properties: "ProjectStatusDetails"
-      direction: IN
-    )
-}
-type User {
-  email: String! @unique
-  familyName: String
-  GivenName: String
-}
-type Project {
-  id: ID @unique
-  uniqueName: String! @unique
-  name: String!
-  website: String @unique
-  verified: Boolean
-  problem: String
-  solution: String
-  employees: String
-  context: String
-  impacts: [Impact!]! @relationship(type: "HAS", direction: OUT)
-  impactAreas: [ImpactArea!]!
-    @relationship(type: "IMPACTS", properties: "ProjectImpacts", direction: OUT)
-  considerations: [Considerations!]!
-    @relationship(type: "ON", properties: "ProjectImpacts", direction: OUT)
-  statuses: [Status!]!
-    @relationship(
-      type: "HAS"
-      properties: "ProjectStatusDetails"
-      direction: OUT
-    )
-  users: [User!]!
-    @relationship(
-      type: "INTERACTED"
-      properties: "UserInteractionDetails"
-      direction: IN
-    )
-}
-
-# todo: Merge with :Ripple
-type Impact {
-  name: String!
-  verified: Boolean!
-  project: Project! @relationship(type: "HAS", direction: IN)
-  impactArea: ImpactArea!
-    @relationship(type: "ON", properties: "ImpactOn", direction: OUT)
-  contexts: Context!
-    @relationship(type: "ON", properties: "ImpactOn", direction: OUT)
-}
-
-# todo: merge with :Scope
-type ImpactArea {
-  uniqueName: String! @unique
-  verified: Boolean!
-  context: String
-  description: String
-  name: String!
-  questions: String
-  impacts: [Impact!]!
-    @relationship(type: "ON", properties: "ImpactOn", direction: IN)
-  projects: [Project!]!
-    @relationship(type: "IMPACTS", properties: "ProjectImpacts", direction: IN)
-  impactCategory: ImpactCategory @relationship(type: "CONTAINS", direction: IN)
-}
-# todo: merge with :Scope
-type ImpactCategory {
-  uniqueName: ImpactCategoryName! @unique
-  name: String!
-  impactAreas: [ImpactArea!]! @relationship(type: "CONTAINS", direction: OUT)
-  doughnutCategory: DoughnutCategory
-    @relationship(type: "CONTAINS", direction: IN)
-}
-# todo: merge with :Scope
-type DoughnutCategory {
-  uniqueName: DoughnutCategoryName! @unique
-  name: String!
-  impactAreaCategories: [ImpactCategory!]!
-    @relationship(type: "CONTAINS", direction: OUT)
-}
-
-# V3 new types
-interface RippleIn @relationshipProperties {
-  # DEFAULT FIELDS
-  verified: Boolean! @default(value: false)
-  createdAt: DateTime! @timestamp(operations: [CREATE])
-  updatedAt: DateTime @timestamp(operations: [UPDATE])
-
-  # DETAILS
-  magnitude: Float!
-}
-
-interface ProjectCreates @relationshipProperties {
-  # DEFAULT FIELDS
-  verified: Boolean! @default(value: false)
-  createdAt: DateTime! @timestamp(operations: [CREATE])
-  updatedAt: DateTime @timestamp(operations: [UPDATE])
-
-  # DETAILS
-  aspect: String!
-  reason: String!
-}
-
-type Ripple {
-  # DEFAULT FIELDS
-  id: ID! @id
-  verified: Boolean! @default(value: false)
-  createdAt: DateTime! @timestamp(operations: [CREATE])
-  updatedAt: DateTime @timestamp(operations: [UPDATE])
-
-  # DETAILS
-  name: String
-  context: String
-  description: String
-
-  # RELATIONSHIPS
-  project: Project!
-    @relationship(type: "CREATES", properties: "ProjectCreates", direction: IN)
-  scopes: [Scope!]!
-    @relationship(type: "IN", properties: "RippleIn", direction: OUT)
-}
-
-type Scope {
-  # DEFAULT FIELDS
-  id: ID! @id
-  verified: Boolean! @default(value: false)
-  createdAt: DateTime! @timestamp(operations: [CREATE])
-  updatedAt: DateTime @timestamp(operations: [UPDATE])
-
-  # DETAILS
-  name: String
-  description: String
-
-  # RELATIONSHIPS
-  considerations: [Consideration!]! @relationship(type: "HAS", direction: OUT)
-  scopes: [Scope!]!
-    @relationship(type: "IN", properties: "RippleIn", direction: IN)
-}
-
-type Consideration {
-  # DEFAULT FIELDS
-  id: ID! @id
-  verified: Boolean! @default(value: false)
-  createdAt: DateTime! @timestamp(operations: [CREATE])
-  updatedAt: DateTime @timestamp(operations: [UPDATE])
-
-  # DETAILS
-  name: String
-  details: String!
-
-  # RELATIONSHIPS
-  projects: [Project!]! @relationship(type: "HAS", direction: IN)
-  considerations: [Consideration!]! @relationship(type: "HAS", direction: IN)
 }
