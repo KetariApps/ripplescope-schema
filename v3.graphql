@@ -32,7 +32,7 @@ type ProjectStatus {
 
 type Project {
   name: String!
-  website: String @unique
+  website: String! @unique
   brief: String!
   description: String
 
