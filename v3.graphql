@@ -178,7 +178,7 @@ type Example @node(labels: ["Example", "Consideration"]) {
 
 type Stakeholder {
   # DETAILS
-  name: String! @uniquE
+  name: String! @unique
   brief: String!
   description: String
 
