@@ -221,7 +221,7 @@ type Geographic @node(labels: ["Geographic", "Consideration"]) {
   createdAt: DateTime! @timestamp(operations: [CREATE])
 }
 
-type Workers @node(labels: ["Workers", "Consideration"]) {
+type Team @node(labels: ["Team", "Consideration"]) {
   # DETAILS
   brief: String
   description: String
@@ -300,9 +300,9 @@ union Interactable =
   | Stakeholder
   | WebDump
   | Geographic
-  | Workers
+  | Team
 
-union ProjectConsideration = Stakeholder | WebDump | Geographic | Workers
+union ProjectConsideration = Stakeholder | WebDump | Geographic | Team
 
 union ScopeConsideration = Stakeholder | Question | Example
 
