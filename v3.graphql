@@ -129,6 +129,7 @@ type Scope {
       properties: "UserInteractsWith"
       direction: IN
     )
+  stakeholders: [Stakeholder!]! @relationship(type: "HAS", direction: OUT)
 
   # DEFAULT FIELDS
   id: ID! @id
