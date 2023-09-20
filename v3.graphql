@@ -340,7 +340,7 @@ interface OrganizationTouchesScope @relationshipProperties {
 interface OrganizationHasStatus @relationshipProperties {
   message: String
   dump: String
-  processId: string!
+  processId: String!
 
   # DEFAULT FIELDS
   createdAt: DateTime! @timestamp(operations: [CREATE])
