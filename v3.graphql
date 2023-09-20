@@ -67,6 +67,8 @@ type Organization {
       properties: "UserInteractsWith"
       direction: IN
     )
+  problems: [Problem!]! @relationship(type: "SOLVING", direction: OUT)
+  solutions: [Solution!]! @relationship(type: "PROPOSES", direction: OUT)
 
   # DEFAULT FIELDS
   id: ID! @id
