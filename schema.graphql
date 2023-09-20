@@ -19,10 +19,14 @@ type User {
   createdAt: DateTime! @timestamp(operations: [CREATE])
 }
 
-type ProjectStatus {
-  name: ProjectStatusName! @unique
-  projects: [Project!]!
-    @relationship(type: "HAS", properties: "ProjectHasStatus", direction: IN)
+type OrganizationStatus {
+  name: OrganizationStatusName! @unique
+  organizations: [Organization!]!
+    @relationship(
+      type: "HAS"
+      properties: "OrganizationHasStatus"
+      direction: IN
+    )
 
   # DEFAULT FIELDS
   id: ID! @id
@@ -30,23 +34,31 @@ type ProjectStatus {
   createdAt: DateTime! @timestamp(operations: [CREATE])
 }
 
-type Project {
+type Organization {
   name: String!
   website: String! @unique
   brief: String!
   description: String
 
   # RELATIONSHIPS
-  considerations: [ProjectConsideration!]!
+  considerations: [OrganizationConsideration!]!
     @relationship(type: "HAS", direction: OUT)
   ripples: [Ripple!]!
-    @relationship(type: "CREATES", properties: "ProjectCreates", direction: OUT)
-  statuses: [ProjectStatus!]!
-    @relationship(type: "HAS", properties: "ProjectHasStatus", direction: OUT)
+    @relationship(
+      type: "CREATES"
+      properties: "OrganizationCreates"
+      direction: OUT
+    )
+  statuses: [OrganizationStatus!]!
+    @relationship(
+      type: "HAS"
+      properties: "OrganizationHasStatus"
+      direction: OUT
+    )
   scopes: [Scope!]!
     @relationship(
       type: "TOUCHES"
-      properties: "ProjectTouchesScope"
+      properties: "OrganizationTouchesScope"
       direction: OUT
     )
   users: [User!]!
@@ -69,8 +81,12 @@ type Ripple {
   description: String
 
   # RELATIONSHIPS
-  project: Project!
-    @relationship(type: "CREATES", properties: "ProjectCreates", direction: IN)
+  organization: Organization!
+    @relationship(
+      type: "CREATES"
+      properties: "OrganizationCreates"
+      direction: IN
+    )
   scopes: [Scope!]!
     @relationship(type: "IN", properties: "RippleIn", direction: OUT)
   users: [User!]!
@@ -99,10 +115,10 @@ type Scope {
   scopes: [Scope!]! @relationship(type: "REFINES", direction: OUT)
   ripples: [Ripple!]!
     @relationship(type: "IN", properties: "RippleIn", direction: IN)
-  projects: [Project!]!
+  organizations: [Organization!]!
     @relationship(
       type: "TOUCHES"
-      properties: "ProjectTouchesScope"
+      properties: "OrganizationTouchesScope"
       direction: IN
     )
   users: [User!]!
@@ -167,7 +183,7 @@ type Stakeholder @node(labels: ["Stakeholder", "Consideration"]) {
   description: String
 
   # RELATIONSHIPS
-  projects: [Project!]! @relationship(type: "HAS", direction: IN)
+  organizations: [Organization!]! @relationship(type: "HAS", direction: IN)
   scopes: [Scope!]! @relationship(type: "HAS", direction: IN)
   users: [User!]!
     @relationship(
@@ -187,7 +203,7 @@ type WebDump @node(labels: ["WebDump", "Consideration"]) {
   content: String!
 
   # RELATIONSHIPS
-  projects: [Project!]! @relationship(type: "HAS", direction: IN)
+  organizations: [Organization!]! @relationship(type: "HAS", direction: IN)
   users: [User!]!
     @relationship(
       type: "INTERACTS_WITH"
@@ -207,7 +223,7 @@ type Geographic @node(labels: ["Geographic", "Consideration"]) {
   description: String
 
   # RELATIONSHIPS
-  projects: [Project!]! @relationship(type: "HAS", direction: IN)
+  organizations: [Organization!]! @relationship(type: "HAS", direction: IN)
   users: [User!]!
     @relationship(
       type: "INTERACTS_WITH"
@@ -221,13 +237,13 @@ type Geographic @node(labels: ["Geographic", "Consideration"]) {
   createdAt: DateTime! @timestamp(operations: [CREATE])
 }
 
-type Workers @node(labels: ["Workers", "Consideration"]) {
+type Team @node(labels: ["Team", "Consideration"]) {
   # DETAILS
   brief: String
   description: String
 
   # RELATIONSHIPS
-  projects: [Project!]! @relationship(type: "HAS", direction: IN)
+  organizations: [Organization!]! @relationship(type: "HAS", direction: IN)
   users: [User!]!
     @relationship(
       type: "INTERACTS_WITH"
@@ -242,7 +258,7 @@ type Workers @node(labels: ["Workers", "Consideration"]) {
 }
 
 # Interfaces
-interface ProjectTouchesScope @relationshipProperties {
+interface OrganizationTouchesScope @relationshipProperties {
   aspect: String!
   reason: String!
 
@@ -251,7 +267,7 @@ interface ProjectTouchesScope @relationshipProperties {
   createdAt: DateTime! @timestamp(operations: [CREATE])
 }
 
-interface ProjectHasStatus @relationshipProperties {
+interface OrganizationHasStatus @relationshipProperties {
   message: String
   dump: String
 
@@ -278,7 +294,7 @@ interface RippleIn @relationshipProperties {
   createdAt: DateTime! @timestamp(operations: [CREATE])
 }
 
-interface ProjectCreates @relationshipProperties {
+interface OrganizationCreates @relationshipProperties {
   # DETAILS
   aspect: String!
   reason: String!
@@ -291,8 +307,8 @@ interface ProjectCreates @relationshipProperties {
 # Unions
 union Interactable =
     User
-  | ProjectStatus
-  | Project
+  | OrganizationStatus
+  | Organization
   | Ripple
   | Scope
   | Question
@@ -300,9 +316,9 @@ union Interactable =
   | Stakeholder
   | WebDump
   | Geographic
-  | Workers
+  | Team
 
-union ProjectConsideration = Stakeholder | WebDump | Geographic | Workers
+union OrganizationConsideration = Stakeholder | WebDump | Geographic | Team
 
 union ScopeConsideration = Stakeholder | Question | Example
 
@@ -312,7 +328,7 @@ enum RipplesSentiment {
   NEGATIVE
 }
 
-enum ProjectStatusName {
+enum OrganizationStatusName {
   RIPPLE_CHAIN_LOCATIONS_INFERRING
   RIPPLE_CHAIN_LOCATIONS_CONNECTED
   RIPPLE_CHAIN_SCOPES_INFERRING
