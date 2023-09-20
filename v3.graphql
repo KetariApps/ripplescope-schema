@@ -37,7 +37,7 @@ type OrganizationStatus {
 type Organization {
   name: String!
   website: String! @unique
-  brief: String!
+  brief: String
   description: String
 
   # RELATIONSHIPS
