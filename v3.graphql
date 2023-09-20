@@ -138,13 +138,33 @@ type Scope {
 }
 
 # Consideration types
+
+type Misc @node(labels: ["Misc", "Consideration"]) {
+  # DETAILS
+  description: String!
+
+  # RELATIONSHIPS
+  project: Project! @relationship(type: "HAS", direction: IN)
+  users: [User!]!
+    @relationship(
+      type: "INTERACTS_WITH"
+      properties: "UserInteractsWith"
+      direction: IN
+    )
+
+  # DEFAULT FIELDS
+  id: ID! @id
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+}
+
 type Question @node(labels: ["Question", "Consideration"]) {
   # DETAILS
   brief: String!
   description: String
 
   # RELATIONSHIPS
-  scopes: [Scope!]! @relationship(type: "HAS", direction: IN)
+  scope: Scope! @relationship(type: "HAS", direction: IN)
   users: [User!]!
     @relationship(
       type: "INTERACTS_WITH"
@@ -179,35 +199,12 @@ type Example @node(labels: ["Example", "Consideration"]) {
   createdAt: DateTime! @timestamp(operations: [CREATE])
 }
 
-type Stakeholder {
-  # DETAILS
-  name: String! @unique
-  brief: String!
-  description: String
-
-  # RELATIONSHIPS
-  organizations: [Organization!]! @relationship(type: "HAS", direction: IN)
-  scopes: [Scope!]! @relationship(type: "HAS", direction: IN)
-  problems: [Problem!]! @relationship(type: "HAS", direction: IN)
-  users: [User!]!
-    @relationship(
-      type: "INTERACTS_WITH"
-      properties: "UserInteractsWith"
-      direction: IN
-    )
-
-  # DEFAULT FIELDS
-  id: ID! @id
-  verified: Boolean! @default(value: false)
-  createdAt: DateTime! @timestamp(operations: [CREATE])
-}
-
 type WebDump @node(labels: ["WebDump", "Consideration"]) {
   # DETAILS
   content: String!
 
   # RELATIONSHIPS
-  organizations: [Organization!]! @relationship(type: "HAS", direction: IN)
+  organization: Organization! @relationship(type: "HAS", direction: IN)
   users: [User!]!
     @relationship(
       type: "INTERACTS_WITH"
@@ -227,7 +224,7 @@ type Geographic @node(labels: ["Geographic", "Consideration"]) {
   description: String
 
   # RELATIONSHIPS
-  organizations: [Organization!]! @relationship(type: "HAS", direction: IN)
+  organization: Organization! @relationship(type: "HAS", direction: IN)
   users: [User!]!
     @relationship(
       type: "INTERACTS_WITH"
@@ -247,7 +244,30 @@ type Team @node(labels: ["Team", "Consideration"]) {
   description: String
 
   # RELATIONSHIPS
-  organization: [Organization!]! @relationship(type: "HAS", direction: IN)
+  organization: Organization! @relationship(type: "HAS", direction: IN)
+  users: [User!]!
+    @relationship(
+      type: "INTERACTS_WITH"
+      properties: "UserInteractsWith"
+      direction: IN
+    )
+
+  # DEFAULT FIELDS
+  id: ID! @id
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+}
+
+type Stakeholder {
+  # DETAILS
+  name: String! @unique
+  brief: String!
+  description: String
+
+  # RELATIONSHIPS
+  organizations: [Organization!]! @relationship(type: "HAS", direction: IN)
+  scopes: [Scope!]! @relationship(type: "HAS", direction: IN)
+  problems: [Problem!]! @relationship(type: "HAS", direction: IN)
   users: [User!]!
     @relationship(
       type: "INTERACTS_WITH"
@@ -388,7 +408,7 @@ union Interactable =
   | Problem
   | Solution
 
-union OrganizationConsideration = WebDump | Geographic | Team
+union OrganizationConsideration = WebDump | Geographic | Team | Misc
 
 union ScopeConsideration = Question | Example
 
