@@ -141,7 +141,7 @@ type Scope {
 
 type Misc @node(labels: ["Misc", "Consideration"]) {
   # DETAILS
-  description: String!
+  content: String!
 
   # RELATIONSHIPS
   organization: Organization! @relationship(type: "HAS", direction: IN)
