@@ -313,7 +313,7 @@ type Solution {
   # RELATIONSHIPS
   organization: [Organization!]! @relationship(type: "PROPOSES", direction: IN)
   problems: [Problem!]!
-    @relationship(type: "TO", properties: "ProblemSolution", direction: IN)
+    @relationship(type: "TO", properties: "ProblemSolution", direction: OUT)
   users: [User!]!
     @relationship(
       type: "INTERACTS_WITH"
