@@ -331,6 +331,7 @@ type Solution {
 interface OrganizationTouchesScope @relationshipProperties {
   aspect: String!
   reason: String!
+  processId: String!
 
   # DEFAULT FIELDS
   verified: Boolean! @default(value: false)
@@ -359,6 +360,7 @@ interface RippleIn @relationshipProperties {
   # DETAILS
   magnitude: Float!
   sentiment: RipplesSentiment!
+  processId: String!
 
   # DEFAULT FIELDS
   verified: Boolean! @default(value: false)
@@ -369,6 +371,7 @@ interface OrganizationCreates @relationshipProperties {
   # DETAILS
   aspect: String!
   reason: String!
+  processId: String!
 
   # DEFAULT FIELDS
   verified: Boolean! @default(value: false)
