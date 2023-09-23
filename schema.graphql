@@ -5,6 +5,7 @@ type User {
   displayName: String @unique
   familyName: String
   givenName: String
+  private: boolean! @default(value: true)
 
   # RELATIONSHIPS
   interactions: [Interactable!]!
