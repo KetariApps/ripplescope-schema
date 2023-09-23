@@ -2,6 +2,7 @@
 type User {
   # DETAILS
   email: String! @unique
+  displayName: String @unique
   familyName: String
   givenName: String
 
