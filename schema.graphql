@@ -220,7 +220,7 @@ type WebDump @node(labels: ["WebDump", "Consideration"]) {
   createdAt: DateTime! @timestamp(operations: [CREATE])
 }
 
-type Geographic @node(labels: ["Geographic", "Consideration"]) {
+type Geography @node(labels: ["Geography", "Consideration"]) {
   # DETAILS
   brief: String
   description: String
@@ -409,12 +409,12 @@ union Interactable =
   | Example
   | Stakeholder
   | WebDump
-  | Geographic
+  | Geography
   | Team
   | Problem
   | Solution
 
-union OrganizationConsideration = WebDump | Geographic | Team | Misc
+union OrganizationConsideration = WebDump | Geography | Team | Misc
 
 union ScopeConsideration = Question | Example
 
