@@ -43,6 +43,8 @@ type Organization {
   description: String
 
   # RELATIONSHIPS
+  overviews: [Overview!]!
+    @relationship(type: "HAS", direction: OUT)
   considerations: [OrganizationConsideration!]!
     @relationship(type: "HAS", direction: OUT)
   ripples: [Ripple!]!
@@ -139,10 +141,30 @@ type Scope {
   createdAt: DateTime! @timestamp(operations: [CREATE])
 }
 
+type Overview {
+  brief: String
+  content: String
+
+  # RELATIONSHIPS
+  organization: Organization! @relationship(type: "HAS", direction: IN)
+  users: [User!]!
+    @relationship(
+      type: "INTERACTS_WITH"
+      properties: "UserInteractsWith"
+      direction: IN
+
+  # DEFAULT FIELDS
+  id: ID! @id
+  verified: Boolean! @default(value: false)
+  createdAt: DateTime! @timestamp(operations: [CREATE])
+}
+
 # Consideration types
 
 type Misc @node(labels: ["Misc", "Consideration"]) {
   # DETAILS
+  name: String
+  brief: String
   content: String!
 
   # RELATIONSHIPS
@@ -162,6 +184,7 @@ type Misc @node(labels: ["Misc", "Consideration"]) {
 
 type Question @node(labels: ["Question", "Consideration"]) {
   # DETAILS
+  name: String
   brief: String!
   description: String
 
@@ -222,6 +245,7 @@ type WebDump @node(labels: ["WebDump", "Consideration"]) {
 
 type Geography @node(labels: ["Geography", "Consideration"]) {
   # DETAILS
+  name: String
   brief: String
   description: String
 
@@ -242,6 +266,7 @@ type Geography @node(labels: ["Geography", "Consideration"]) {
 
 type Team @node(labels: ["Team", "Consideration"]) {
   # DETAILS
+  name: String
   brief: String
   description: String
 
