@@ -43,8 +43,7 @@ type Organization {
   description: String
 
   # RELATIONSHIPS
-  overviews: [Overview!]!
-    @relationship(type: "HAS", direction: OUT)
+  overviews: [Overview!]! @relationship(type: "HAS", direction: OUT)
   considerations: [OrganizationConsideration!]!
     @relationship(type: "HAS", direction: OUT)
   ripples: [Ripple!]!
@@ -152,6 +151,7 @@ type Overview {
       type: "INTERACTS_WITH"
       properties: "UserInteractsWith"
       direction: IN
+    )
 
   # DEFAULT FIELDS
   id: ID! @id
