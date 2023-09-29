@@ -310,6 +310,7 @@ type Stakeholder {
 
 type Problem {
   # DETAILS
+  name: String @unique
   brief: String
   description: String
 
@@ -334,6 +335,7 @@ type Problem {
 
 type Solution {
   # DETAILS
+  name: String
   brief: String
   description: String
 
