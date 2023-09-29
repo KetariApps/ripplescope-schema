@@ -288,7 +288,7 @@ type Team @node(labels: ["Team", "Consideration"]) {
 type Stakeholder {
   # DETAILS
   name: String! @unique
-  brief: String!
+  brief: String
   description: String
 
   # RELATIONSHIPS
