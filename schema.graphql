@@ -358,8 +358,8 @@ type Solution {
 
 # Interfaces
 interface OrganizationTouchesScope @relationshipProperties {
-  aspect: String!
-  reason: String!
+  aspect: String
+  reason: String
   processId: String!
 
   # DEFAULT FIELDS
@@ -398,8 +398,8 @@ interface RippleIn @relationshipProperties {
 
 interface OrganizationCreates @relationshipProperties {
   # DETAILS
-  aspect: String!
-  reason: String!
+  aspect: String
+  reason: String
   processId: String!
 
   # DEFAULT FIELDS
