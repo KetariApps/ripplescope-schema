@@ -387,8 +387,8 @@ interface UserInteractsWith @relationshipProperties {
 
 interface RippleIn @relationshipProperties {
   # DETAILS
-  magnitude: Float!
-  sentiment: RipplesSentiment!
+  magnitude: Float
+  sentiment: RipplesSentiment
   processId: String!
 
   # DEFAULT FIELDS
