@@ -110,7 +110,7 @@ type Ripple {
 type Scope {
   # DETAILS
   name: String! @unique
-  brief: String!
+  brief: String
   description: String
   basis: String
 
